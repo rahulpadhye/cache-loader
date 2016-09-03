@@ -8,40 +8,49 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 
 /**
  * @author padhy
  *
  */
+@Component
 public class CacheLoaderImpl implements CacheLoader {
 
 	@Autowired
-	private StringRedisTemplate redisTemplate;
-	private String tokenKeyName = "tokenList";
-	private String cartValueKeyName = "cartList";
-	ListOperations<String, String> listOps = redisTemplate.opsForList();
-	SetOperations<String, String> setOps = redisTemplate.opsForSet();
-	ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
+	private RedisTemplate<String, String> redisTemplate;
+
+	final String listKey = "spring.boot.redis.carts"; 
 	
+	
+//	ListOperations<String, String> listOps = redisTemplate.opsForList();
+//	
+
+//	SetOperations<String, String> setOps = redisTemplate.opsForSet();
+//	
+
+//	ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
+//	
 	
 	public void pushToken(String key){
-		setOps.add(key);
+		//setOps.add(key);
 	}
 	
 	@Override
 	public void push(String key, String value) {
 			
-		if(!this.redisTemplate.hasKey(tokenKeyName)){
-			this.setOps.add(key);
-		}
+		ValueOperations<String, String> valueOps = this.redisTemplate.opsForValue();
+		ListOperations<String,String> listOps = this.redisTemplate.opsForList();
+		//listOps.
 		
-		if(!this.redisTemplate.hasKey(cartValueKeyName)){
-			this.listOps.rightPush(key, value);
+		if(!this.redisTemplate.hasKey(key)){
+			valueOps.set(key, value);
 		}
-		System.out.println("Value added: " + this.redisTemplate.opsForValue().get(key));
+		System.out.println("Value added: " + valueOps.get(key));
 	}
 
 	

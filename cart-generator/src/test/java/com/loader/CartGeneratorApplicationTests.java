@@ -1,4 +1,4 @@
-package com.loader.api;
+package com.loader;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

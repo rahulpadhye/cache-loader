@@ -1,5 +1,6 @@
-package com.loader.api;
+package com.loader;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +17,8 @@ import com.loader.cache.CacheLoaderImpl;
 @SpringBootApplication
 public class CartGeneratorApplication {
 
-	CacheLoader loader;
-	
-	public CartGeneratorApplication() {
-	// Use IoC here
-		loader = new CacheLoaderImpl();
-	}
-	
-	 
+	@Autowired
+	private CacheLoader loader;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CartGeneratorApplication.class, args);
