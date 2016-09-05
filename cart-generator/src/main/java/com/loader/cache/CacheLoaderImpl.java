@@ -54,6 +54,13 @@ public class CacheLoaderImpl implements CacheLoader {
 		}
 	}
 	
+	
+	public void removeEntry(String key){
+		if(!this.redisTemplate.hasKey(key)){
+			redisTemplate.delete(key);
+		}
+	}
+	
 	@Override
 	public String popToken() {
 		// Token is popped from the start of the list which is looked up using KEY.

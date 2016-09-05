@@ -22,8 +22,22 @@ public class CartGeneratorApplication {
 		SpringApplication.run(CartGeneratorApplication.class, args);
 	}
 	
-	@PostMapping("/cart/{token}")
+	@PostMapping("/push/cart/{token}")
 	void pushCart(@PathVariable String token, @RequestBody String cartJson){
+		loader.pushToken(token);
+		loader.setCart(token, cartJson);
+	}
+	
+	@RequestMapping("/pop/cart/{token}")
+	String popCart(){
+		String token = loader.popToken();
+		String cartJson = loader.getCart(token);
+		loader.removeEntry(token);
+		return cartJson;
+	}
+	
+	@PostMapping("/cart/{token}")
+	void setCart(@PathVariable String token, @RequestBody String cartJson){
 		loader.setCart(token, cartJson);
 	}
 

@@ -13,4 +13,5 @@ public interface CacheLoader {
 	public String popToken();
 	public long getTokenCount();
 	public long getCartCount();
+	public void removeEntry(String key);
 }
