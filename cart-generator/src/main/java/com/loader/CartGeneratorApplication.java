@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loader.cache.CacheLoader;
-import com.loader.cache.CacheLoaderImpl;
 
 @RestController
 @SpringBootApplication
@@ -24,17 +22,29 @@ public class CartGeneratorApplication {
 		SpringApplication.run(CartGeneratorApplication.class, args);
 	}
 	
-	@PostMapping("/push/{token}")
+	@PostMapping("/cart/{token}")
 	void pushCart(@PathVariable String token, @RequestBody String cartJson){
-		loader.push(token, cartJson);
-		System.out.println("after invoking push API");
+		loader.setCart(token, cartJson);
 	}
 
-	@RequestMapping("/pop")
-	void popCart(@PathVariable String token, @RequestBody String cartJson){
-		loader.pop();
-		System.out.println("after invoking push API");
+	@RequestMapping("/cart/{token}")
+	String getCart(@PathVariable String token){
+		return loader.getCart(token);
 	}
 	
+	@RequestMapping("/push/{token}")
+	public void pushToken(@PathVariable String token){
+		loader.pushToken(token);
+	}
+	
+	@RequestMapping("/pop")
+	public String popToken(){
+		return loader.popToken();
+	}
+	
+	@RequestMapping("/tokens")
+	long getTokenCount(){
+		return loader.getTokenCount();
+	}
 	
 }

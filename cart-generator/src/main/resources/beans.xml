@@ -6,13 +6,8 @@
 
   <!-- Jedis ConnectionFactory -->
    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:host-name="localhost" p:port="6379" />
-   
-   
-   <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
 
-   <bean id="queue" class="org.springframework.data.redis.support.collections.DefaultRedisList">
-    <constructor-arg ref="redisTemplate"/>
-    <constructor-arg value="queue-key"/>
-  </bean>
+	<!-- Redis Template -->
+   <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
   
 </beans>
