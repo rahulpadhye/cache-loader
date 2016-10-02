@@ -5,6 +5,8 @@ package com.loader.cache;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CacheLoaderImpl implements CacheLoader {
 
+	private static final Log LOG = LogFactory.getLog(CacheLoaderImpl.class);
+	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 

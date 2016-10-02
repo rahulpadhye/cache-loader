@@ -2,12 +2,38 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aws-context="http://www.springframework.org/schema/cloud/aws/context"
+	xmlns:aws-cache="http://www.springframework.org/schema/cloud/aws/cache"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/cloud/aws/context
+	    http://www.springframework.org/schema/cloud/aws/context/spring-cloud-aws-context.xsd
+	    http://www.springframework.org/schema/cloud/aws/cache
+        http://www.springframework.org/schema/cloud/aws/cache/spring-cloud-aws-cache-1.0.xsd">
 
   <!-- Jedis ConnectionFactory -->
    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" p:host-name="localhost" p:port="6379" />
+<!--  dcp-cart-cache.kx1tl9.0001.usw2.cache.amazonaws.com-->
 
 	<!-- Redis Template -->
    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="jedisConnectionFactory"/>
   
+	  <!-- Define global credentials for all the AWS clients -->
+<!-- 	<aws-context:context-credentials>
+	    <aws-context:instance-profile-credentials/>
+	    <aws-context:simple-credentials access-key="${accessKey:}"
+	                                    secret-key="${secretKey:}"/>
+	</aws-context:context-credentials>
+	 -->
+	<!-- Define global region -->
+	<aws-context:context-region auto-detect="true"/>
+	     
+    <cache:annotation-driven />	   
+	<beans profile="!local">
+        <aws-cache:cache-manager>
+            <aws-cache:cache-cluster name="RedisCacheCluster" expiration="15"/>
+        </aws-cache:cache-manager>
+        
+    </beans>  
+
 </beans>
